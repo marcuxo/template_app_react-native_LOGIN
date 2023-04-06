@@ -33,7 +33,7 @@ eas update
 eas build -p android --profile preview //se le asigna el perfil
 ```
 
-# RESUME ******************************************************
+# SUMMARY ************************************************
 
 ```cmd
 npx expo install expo-updates
