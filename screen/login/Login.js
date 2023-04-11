@@ -11,6 +11,7 @@ import { Entypo } from '@expo/vector-icons';
 import GetDataStartUserDb from '../../dataBase/querys/GetDataStartUserDb';
 import SaveLoginUser from '../../dataBase/querys/SaveLoginUser';
 import DelDataUserDB from '../../dataBase/querys/DelDataUserDB';
+import { Alert } from 'react-native';
 
 export default function Login({ navigation }) {
 
@@ -28,14 +29,14 @@ export default function Login({ navigation }) {
   }
 
   const HandleImnot = () => {
-    Alert.alert('MEDIDORES','Completa el usuario y clave!!')
-    DelDataDB();
+    DelDataUserDB();
     setDataUserStart('');
     setLoginData({
       user: '',
       pass: '',
       empresa: ''
     })
+    Alert.alert('MEDIDORES','Completa el usuario y clave!!')
   }
 
   // borrar funcion temporal
@@ -48,7 +49,7 @@ export default function Login({ navigation }) {
   }, [])
 
   useEffect(() => {
-    console.log(DataUserStart)
+    // console.log(DataUserStart)
     setLoginData({'user': DataUserStart.correo || '','pass': DataUserStart.password, 'empresa': DataUserStart.empresa || ''})//inicia el login con las credenciales guardadas
   }, [DataUserStart])
 
@@ -60,7 +61,8 @@ export default function Login({ navigation }) {
           style={styles.container}
         >
           <View style={styles.inner}>
-            <Text>INICIO SESION v2</Text>
+            <Text>INICIO SESION</Text>
+            <Text></Text>
             <View style={styles.valorumain}>
               <TextInput
                 dense={true}
@@ -115,7 +117,7 @@ export default function Login({ navigation }) {
           }
           </View>
           <View>
-            <Text style={styles.floatRight}>V {expo.version}</Text>
+            <Text style={styles.floatRight}>V3</Text>
           </View>
 
           <View style={styles.valorumain}>
@@ -127,7 +129,7 @@ export default function Login({ navigation }) {
                 icon='account-lock-open'
                 buttonColor={'#181C7C'}
               >
-                <Text style={{color: '#ECECEC'}}>Entrar</Text>
+                <Text style={{color: '#ECECEC'}}>Eliminar Usuario</Text>
               </Button>
             </TouchableOpacity>
             
@@ -149,7 +151,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   inner: {
-    backgroundColor: 'rgba(255,255,255,.4)',
+    backgroundColor: 'rgba(255,255,255,.3)',
     alignItems: 'center',
     paddingVertical: 25
   },

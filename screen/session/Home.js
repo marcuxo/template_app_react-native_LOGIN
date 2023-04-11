@@ -1,14 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native'
 import { View } from 'react-native'
+import GetMedidorsOnSRV from '../../api/GetMedidorsOnSRV';
+import GetDataStartUserDb from '../../dataBase/querys/GetDataStartUserDb';
+import ObteainDataItemsFrom from '../../dataBase/querys/ObteainDataItemsFrom';
 
 export default function Home({ route, navigation }) {
   const {empresa} = route.params;
   console.log('data==>>>', empresa)
+
+  const [DataUserStart, setDataUserStart] = useState('')
+
+  const GetDataFromSrvMedidors = async () => {
+    await ObteainDataItemsFrom({EMPRESA:empresa})
+    // let medidores = await GetMedidorsOnSRV({EMPRESA:empresa})
+    // console.log(medidores)
+  }
+
+  useEffect(() => {
+    GetDataStartUserDb({setDataUserStart})
+    GetDataFromSrvMedidors()
+  }, [])
+  
   return (
     <View style={styles.container}>
       <Text>HOME {empresa}</Text>
+      <Text>Uer: {DataUserStart?.nombre}</Text>
     </View>
   )
 }
