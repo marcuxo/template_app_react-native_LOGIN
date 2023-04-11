@@ -17,7 +17,6 @@ const wait = timeout => {
 
 export default function Home({ route, navigation }) {
   const {empresa} = route.params;
-  console.log('data==>>>', empresa)
 
   const [DataUserStart, setDataUserStart] = useState('');
   const [CountDone, setCountDone] = useState(50);
@@ -26,6 +25,7 @@ export default function Home({ route, navigation }) {
   // modulo que recarga pa pagina al haces swip down
   const onRefresh = useCallback(async() => {
     setRefreshing(true);
+    console.log('data==>>>', empresa)
     
     wait(2000).then(() => setRefreshing(false));
   }, []);
@@ -57,11 +57,13 @@ export default function Home({ route, navigation }) {
           />
         }
       >
-      <View style={styles.container}>
-        <Text>HOME {empresa}</Text>
-        <Text>Uer: {DataUserStart?.nombre}</Text>
-        <View style={styles.valorumain}>
-          <TouchableOpacity
+      <View style={styles.container_user}>
+        <Text>User: {DataUserStart?.nombre}</Text>
+        <Text>Empresa: {empresa}</Text>
+        
+      </View>
+      <View style={styles.container_body}>
+        <TouchableOpacity
             onPress={()=>dropDataBase()}
           >
             <Button
@@ -69,12 +71,11 @@ export default function Home({ route, navigation }) {
               icon='account-lock-open'
               buttonColor={'#181C7C'}
             >
-              <Text style={{color: '#FFFFFF'}}>Clear DataBase </Text>
+              <Text style={{color: '#FFFFFF'}}>Borrar BaseDeDatos!! </Text>
             </Button>
           </TouchableOpacity>
           
         </View>
-      </View>
       </ScrollView>
     </View>
    
@@ -85,6 +86,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+  },
+  container_user: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 10
+  },
+  container_body: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 10
   },
   titlemed: {
     fontSize: 30,

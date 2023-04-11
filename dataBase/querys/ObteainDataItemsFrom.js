@@ -24,14 +24,14 @@ export default function ObteainDataItemsFrom({EMPRESA}) {
       console.log('base de datos con datos')
       for (let antfc = 0; antfc < data.rows._array.length; antfc++) {
         const antfc_ = data.rows._array[antfc];
-        console.log(antfc_.done)
-        console.log(antfc_.empresa)
-        console.log(antfc_.fecha_ant)
-        console.log(antfc_.fecha_new)
-        console.log(antfc_.id)
-        console.log(antfc_.item)
-        console.log(antfc_.v_ant)
-        console.log(antfc_.v_new)
+        // console.log(antfc_.done)
+        // console.log(antfc_.empresa)
+        // console.log(antfc_.fecha_ant)
+        // console.log(antfc_.fecha_new)
+        // console.log(antfc_.id)
+        // console.log(antfc_.item)
+        // console.log(antfc_.v_ant)
+        // console.log(antfc_.v_new)
       }
     }
   }
