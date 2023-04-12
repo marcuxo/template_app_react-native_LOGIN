@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { RefreshControl } from 'react-native';
+import {  RefreshControl } from 'react-native';
 import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native'
 import { ScrollView } from 'react-native';
@@ -9,6 +9,10 @@ import GetMedidorsOnSRV from '../../api/GetMedidorsOnSRV';
 import DelDataItemsDB from '../../dataBase/querys/DelDataItemsDB';
 import GetDataStartUserDb from '../../dataBase/querys/GetDataStartUserDb';
 import ObteainDataItemsFrom from '../../dataBase/querys/ObteainDataItemsFrom';
+import NetInfo from '@react-native-community/netinfo';
+import SaveNewValueMed from '../../components/SaveNewValueMed';
+// icons
+import { Foundation } from '@expo/vector-icons';
 
 //timer to refresh app
 const wait = timeout => {
@@ -21,17 +25,37 @@ export default function Home({ route, navigation }) {
   const [DataUserStart, setDataUserStart] = useState('');
   const [CountDone, setCountDone] = useState(50);
   const [refreshing, setRefreshing] = useState(false);
+  const [DataMedidor, setDataMedidor] = useState([]);
+  const [DatdaMedDateNow, setDatdaMedDateNow] = useState('0000-00-00');
+  const [IsConnet, setIsConnet] = useState(false);
+  const [ModifiData, setModifiData] = useState(0);
+
 
   // modulo que recarga pa pagina al haces swip down
   const onRefresh = useCallback(async() => {
     setRefreshing(true);
-    console.log('data==>>>', empresa)
+    // console.log('data==>>>', empresa)
+    GetDataFromSrvMedidors();
     
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  setInterval(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnet(state.isConnected);
+      // console.log(state.type,state.isConnected)
+    })
+    unsubscribe()
+  }, 10000);
+
   const GetDataFromSrvMedidors = async () => {
-    await ObteainDataItemsFrom({EMPRESA:empresa})
+    let data = await ObteainDataItemsFrom({EMPRESA:empresa})
+    console.log('data==||>>>',data.length)
+    if(data.length == 0){
+      Alert.alert('Medidores','No se encontraron medidores vuelva a recargar 🙄')
+    }else{
+      setDataMedidor(data)
+    }
     // let medidores = await GetMedidorsOnSRV({EMPRESA:empresa})
     // console.log(medidores)
   }
@@ -42,13 +66,24 @@ export default function Home({ route, navigation }) {
   }
 
   useEffect(() => {
-    GetDataStartUserDb({setDataUserStart})
-    GetDataFromSrvMedidors()
+    GetDataStartUserDb({setDataUserStart});
+    GetDataFromSrvMedidors();
   }, [])
+
+  useEffect(() => {
+    GetDataFromSrvMedidors();
+    console.log('se modifico el dato del dato con el numero')
+  }, [ModifiData])
+
+  useEffect(() => {
+    let fecha = new Date()
+    let a = fecha.toISOString()
+    setDatdaMedDateNow(a.split('T')[0])
+  }, [])
+  
   
   return (
     <View style={{flex:1,paddingTop:29}}>
-      <ProgressBar progress={CountDone/100} color={'purple'} />
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -62,8 +97,24 @@ export default function Home({ route, navigation }) {
         <Text>Empresa: {empresa}</Text>
         
       </View>
-      <View style={styles.container_body}>
-        <TouchableOpacity
+      <View style={styles.container_body_med}>
+        {
+          DataMedidor.map(itm=>
+
+            <SaveNewValueMed
+              key={itm.id}
+              itm={itm}
+              DatdaMedDateNow={DatdaMedDateNow}
+              empresa={empresa}
+              ModifiData={ModifiData}
+              setModifiData={setModifiData}
+            />
+          
+          )
+        }
+      </View>
+        <View style={styles.container_body}>
+          <TouchableOpacity
             onPress={()=>dropDataBase()}
           >
             <Button
@@ -74,7 +125,14 @@ export default function Home({ route, navigation }) {
               <Text style={{color: '#FFFFFF'}}>Borrar BaseDeDatos!! </Text>
             </Button>
           </TouchableOpacity>
-          
+          <Text>
+            <Foundation name="mobile-signal" size={24} color={IsConnet?'green':'red'} />
+          </Text>
+        </View>
+        <View style={styles.container_body}>
+          <Text>
+            <Foundation name="mobile-signal" size={24} color={IsConnet?'green':'red'} />
+          </Text>
         </View>
       </ScrollView>
     </View>
@@ -92,9 +150,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10
   },
+  container_card: {
+    // flex: 1,
+    // alignItems: 'center',
+    // paddingVertical: 10
+    borderWidth: 2,
+    marginBottom: 3,
+    borderRadius: 5,
+    paddingHorizontal:5,
+    backgroundColor: '#E5E5E5',
+    borderColor: '#CACACA'
+  },
   container_body: {
     flex: 1,
     alignItems: 'center',
+    paddingVertical: 10
+  },
+  container_body_med: {
+    flex: 1,
+    // alignItems: 'center',
     paddingVertical: 10
   },
   titlemed: {
