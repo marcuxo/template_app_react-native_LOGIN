@@ -98,6 +98,9 @@ export default function SaveNewValueMed({itm,DatdaMedDateNow, empresa, ModifiDat
       <View key={itm.id} style={itm.done===0?styles.container_card_nodata:styles.container_card_success}>
         <Text style={itm.done===0?styles.title_card_nodata:styles.title_card_success}>
           {itm.id}.- {itm.item} <AntDesign name="dashboard" color={"white"} />
+          {
+            itm.done===1?<Text style={{marginLeft: 20}}>     Consumo:{FormatNumeral(itm.v_new-itm.v_ant)}</Text>:null
+          }
         </Text>
         <Text style={itm.done===0?styles.paraf_card_nodata:styles.paraf_card_success}>
           {itm.fecha_ant}<MaterialIcons name="double-arrow" color={"white"} />{FormatNumeral(itm.v_ant)}
