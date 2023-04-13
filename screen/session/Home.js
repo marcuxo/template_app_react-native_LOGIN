@@ -11,8 +11,10 @@ import GetDataStartUserDb from '../../dataBase/querys/GetDataStartUserDb';
 import ObteainDataItemsFrom from '../../dataBase/querys/ObteainDataItemsFrom';
 import NetInfo from '@react-native-community/netinfo';
 import SaveNewValueMed from '../../components/SaveNewValueMed';
+import SaveDataMedidor_OnSRV from '../../api/SaveDataMedidor_OnSRV';
 // icons
 import { Foundation } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 //timer to refresh app
 const wait = timeout => {
@@ -23,7 +25,7 @@ export default function Home({ route, navigation }) {
   const {empresa} = route.params;
 
   const [DataUserStart, setDataUserStart] = useState('');
-  const [CountDone, setCountDone] = useState(50);
+  const [IsCompleteALL, setIsCompleteALL] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [DataMedidor, setDataMedidor] = useState([]);
   const [DatdaMedDateNow, setDatdaMedDateNow] = useState('0000-00-00');
@@ -40,6 +42,19 @@ export default function Home({ route, navigation }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  const VerifiIsAll = async () => {
+    let acum = 0;
+    DataMedidor.map(itmds => {
+      acum = acum + itmds.done
+    })
+    if(DataMedidor.length === acum){
+      setIsCompleteALL(false);
+    }else{
+      setIsCompleteALL(true);
+    }
+    // console.log( 'Cantidad ded datos en BD local',DataMedidor.length,' v/s ',acum)
+  }
+
   setInterval(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnet(state.isConnected);
@@ -50,11 +65,12 @@ export default function Home({ route, navigation }) {
 
   const GetDataFromSrvMedidors = async () => {
     let data = await ObteainDataItemsFrom({EMPRESA:empresa})
-    console.log('data==||>>>',data.length)
+    // console.log('data==||>>>',data.length)
     if(data.length == 0){
-      Alert.alert('Medidores','No se encontraron medidores vuelva a recargar 🙄')
+      // Alert.alert('Medidores','No se encontraron medidores vuelva a recargar 🙄')
+      GetDataFromSrvMedidors()
     }else{
-      setDataMedidor(data)
+      await setDataMedidor(data)
     }
     // let medidores = await GetMedidorsOnSRV({EMPRESA:empresa})
     // console.log(medidores)
@@ -65,6 +81,21 @@ export default function Home({ route, navigation }) {
     Alert.alert("Meidores","Los datos Fueron Borrados")
   }
 
+  const HandleSaveData = async () => {
+    let resp = await SaveDataMedidor_OnSRV({DataMedidor,USER: DataUserStart?.nombre})
+    if(resp.OK){
+      Alert.alert('Medidores',resp.MSG)
+      // eliminar los medidores y recargar los nuevos
+      await DelDataItemsDB()//elimina los medidores de la base de datos local
+      // await GetDataFromSrvMedidors();// recarga los medidores actualizados desde la base de datos remota(SRV)
+      await setDataMedidor([])
+    }else{
+      Alert.alert('Medidores',resp.MSG)
+      await DelDataItemsDB()
+      await setDataMedidor([])
+    }
+  }
+
   useEffect(() => {
     GetDataStartUserDb({setDataUserStart});
     GetDataFromSrvMedidors();
@@ -72,7 +103,7 @@ export default function Home({ route, navigation }) {
 
   useEffect(() => {
     GetDataFromSrvMedidors();
-    console.log('se modifico el dato del dato con el numero')
+    // console.log('se modifico el dato del dato con el numero')
   }, [ModifiData])
 
   useEffect(() => {
@@ -80,7 +111,10 @@ export default function Home({ route, navigation }) {
     let a = fecha.toISOString()
     setDatdaMedDateNow(a.split('T')[0])
   }, [])
-  
+
+  useEffect(() => {
+    VerifiIsAll()
+  }, [DataMedidor])
   
   return (
     <View style={{flex:1,paddingTop:29}}>
@@ -99,6 +133,12 @@ export default function Home({ route, navigation }) {
       </View>
       <View style={styles.container_body_med}>
         {
+          DataMedidor.length===0?
+          <View style={{alignItems: 'center', paddingVertical: 70}}>
+            <Text style={{color: '#C8C8C8'}}>Deslice Hacia abajo para recargar la aplicacion.</Text>
+            <Text><MaterialCommunityIcons name="gesture-swipe-down" size={60} color="#C8C8C8" /></Text>
+          </View>
+          :
           DataMedidor.map(itm=>
 
             <SaveNewValueMed
@@ -115,24 +155,35 @@ export default function Home({ route, navigation }) {
       </View>
         <View style={styles.container_body}>
           <TouchableOpacity
+            onPress={()=>HandleSaveData()}
+            disabled={IsCompleteALL||!IsConnet?true:false}
+          >
+            <Button
+              mode='contained'
+              icon='content-save'
+              disabled={IsCompleteALL||!IsConnet?true:false}
+              buttonColor={'#181C7C'}
+            >
+              <Text style={{color: '#FFFFFF'}}>
+                Cargar Datos  <Foundation name="mobile-signal" size={24} color={IsConnet?'green':'red'} />
+              </Text>
+            </Button>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.container_body}>
+          <TouchableOpacity
             onPress={()=>dropDataBase()}
           >
             <Button
               mode='contained'
-              icon='account-lock-open'
+              icon='trash-can-outline'
               buttonColor={'#181C7C'}
             >
-              <Text style={{color: '#FFFFFF'}}>Borrar BaseDeDatos!! </Text>
+              <Text style={{color: '#FFFFFF'}}>
+                Borrar BaseDeDatos!!
+              </Text>
             </Button>
           </TouchableOpacity>
-          <Text>
-            <Foundation name="mobile-signal" size={24} color={IsConnet?'green':'red'} />
-          </Text>
-        </View>
-        <View style={styles.container_body}>
-          <Text>
-            <Foundation name="mobile-signal" size={24} color={IsConnet?'green':'red'} />
-          </Text>
         </View>
       </ScrollView>
     </View>
@@ -164,7 +215,8 @@ const styles = StyleSheet.create({
   container_body: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 10
+    paddingVertical: 10,
+    color: 'white'
   },
   container_body_med: {
     flex: 1,

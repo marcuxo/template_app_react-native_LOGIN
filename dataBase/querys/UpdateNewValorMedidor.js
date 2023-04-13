@@ -4,7 +4,7 @@ const db = OpenconectionItems()
 
 export default function UpdateNewValorMedidor({iData, valorMedidor, empresa, DatdaMedDateNow, ModifiData_, setModifiData_}) {
   
-    console.log(iData['id'], iData['v_ant'], valorMedidor, empresa, DatdaMedDateNow)
+    // console.log(iData['id'], iData['v_ant'], valorMedidor, empresa, DatdaMedDateNow)
 
     db.transaction(
       (tx) => {

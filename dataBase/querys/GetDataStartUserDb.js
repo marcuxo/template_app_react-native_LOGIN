@@ -4,7 +4,7 @@ import OpenconectionUser from '../connect/OpenconectionUser';
 const db = OpenconectionUser()
 
 export default function GetDataStartUserDb({setDataUserStart}) {
-  console.log('consulta inicial a base de datos')
+  // console.log('consulta inicial a base de datos')
   db.transaction((tx) => {
     tx.executeSql("select * from user", [], function(tx, res){
       // console.log("respDB=>",res.rows._array)

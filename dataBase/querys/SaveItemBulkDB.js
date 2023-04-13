@@ -5,7 +5,7 @@ import OpenconectionItems from '../connect/OpenconectionItems';
 const db2 = OpenconectionItems()
 
 export const SaveItemBulkDB = ({ModifiData, setModifiData}) => {
-  console.log('LoadBulkToApp')
+  // console.log('LoadBulkToApp')
   db2.transaction((tx) => {
     tx.executeSql("select * from items", [], function(tx, res){
         isLoadData(res.rows._array)

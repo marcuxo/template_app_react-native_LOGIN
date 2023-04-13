@@ -23,7 +23,7 @@ export default function ObteainDataItemsFrom({EMPRESA}) {
         }
         resolve([])
       }else{
-        console.log('base de datos con datos')
+        // console.log('base de datos con datos')
         resolve(data.rows._array)
         // for (let antfc = 0; antfc < data.rows._array.length; antfc++) {
         //   const antfc_ = data.rows._array[antfc];

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { FormatNumeral } from './FormatNumbers'
 import { View,Text, StyleSheet, TouchableOpacity, Modal, Alert } from 'react-native'
+import UpdateNewValorMedidor from '../dataBase/querys/UpdateNewValorMedidor';
+import { Button, TextInput } from 'react-native-paper';
+
 // icons
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { Button, TextInput } from 'react-native-paper';
-import UpdateNewValorMedidor from '../dataBase/querys/UpdateNewValorMedidor';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function SaveNewValueMed({itm,DatdaMedDateNow, empresa, ModifiData, setModifiData}) {
   // console.log('datos modificadisimos modal',ModifiData)
@@ -94,11 +96,13 @@ export default function SaveNewValueMed({itm,DatdaMedDateNow, empresa, ModifiDat
         </View>
       </Modal>
       <View key={itm.id} style={itm.done===0?styles.container_card_nodata:styles.container_card_success}>
-        <Text style={itm.done===0?styles.title_card_nodata:styles.title_card_success}>{itm.id}.- {itm.item} <AntDesign name="dashboard" color={itm.done===0?"#FFE405":"#505050"} /></Text>
+        <Text style={itm.done===0?styles.title_card_nodata:styles.title_card_success}>
+          {itm.id}.- {itm.item} <AntDesign name="dashboard" color={"white"} />
+        </Text>
         <Text style={itm.done===0?styles.paraf_card_nodata:styles.paraf_card_success}>
-          {itm.fecha_ant}<MaterialIcons name="double-arrow" color={itm.done===0?"#FFE405":"#505050"} />{FormatNumeral(itm.v_ant)}
-          <MaterialIcons name="space-bar" size={24} color={itm.done===0?"#FFE405":"#505050"} />
-          {DatdaMedDateNow}<MaterialIcons name="double-arrow" color={itm.done===0?"#FFE405":"#505050"} />{itm.v_new===null?0:FormatNumeral(itm.v_new)}
+          {itm.fecha_ant}<MaterialIcons name="double-arrow" color={"white"} />{FormatNumeral(itm.v_ant)}
+          <Text>  <FontAwesome5 name="equals" color={"white"}/>  </Text>
+          {DatdaMedDateNow}<MaterialIcons name="double-arrow" color={"white"} />{itm.v_new===null?0:FormatNumeral(itm.v_new)}
         </Text>
       </View>
     </TouchableOpacity>
@@ -111,8 +115,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding:5,
     // backgroundColor: '#FB4038',//nodata
-    backgroundColor: '#5FCF3A',//success
+    backgroundColor: '#4AA02D',//success
     borderColor: '#CACACA',
+    color: 'white'
   },
   container_card_nodata: {
     marginBottom: 3,
@@ -121,19 +126,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#FB4038',//nodata
     // backgroundColor: '#5FCF3A',//success
     borderColor: '#CACACA',
+    color: 'white'
   },
   title_card_success: {
     fontWeight: '700',
+    fontSize:15,
+    color: 'white'
   },
   paraf_card_success: {
-    color: '#000'
+    color: 'white'
   },
   title_card_nodata: {
     fontWeight: '700',
-    color: '#FFE405'
+    color: 'white',
+    fontSize:15
   },
   paraf_card_nodata: {
-    color: '#FFE405'
+    color: 'white'
   },
   text_white: {
     color: '#ffffff'

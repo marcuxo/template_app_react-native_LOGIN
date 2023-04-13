@@ -25,7 +25,7 @@ export default function SaveLoginUser({LoginData, setIsLoading, navigation}) {
   let name = name_.split('@',1)[0]//saca el nombre del correo
   
   const FunctionOutSide = async (tx, res) => {
-    console.log('lengt=>>',res.rows._array.length)
+    // console.log('lengt=>>',res.rows._array.length)
     // console.log("FNC=>",LoginData.pass, res.rows._array)
     if(res.rows._array.length>0) {//logica para comprobar las credenciales guardadas en local
       // console.log('hay session iniciada', res.rows._array[0].id);
@@ -36,7 +36,7 @@ export default function SaveLoginUser({LoginData, setIsLoading, navigation}) {
           },
           null,
         )
-        console.log('uno')
+        // console.log('uno')
         navigation.navigate('home',{empresa:res.rows._array[0].empresa});
         setIsLoading(false);
         return
@@ -72,7 +72,7 @@ export default function SaveLoginUser({LoginData, setIsLoading, navigation}) {
           },
           null,
         );
-        console.log('dos')
+        // console.log('dos')
         navigation.navigate('home',{empresa:reqkkst.data.empresa});
         setIsLoading(false);
       }else{
