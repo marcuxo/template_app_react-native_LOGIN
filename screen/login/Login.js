@@ -117,10 +117,10 @@ export default function Login({ navigation }) {
           }
           </View>
           <View>
-            <Text style={styles.floatRight}>V3</Text>
+            <Text style={styles.floatRight}>V5</Text>
           </View>
 
-          <View style={styles.valorumain}>
+          {/* <View style={styles.valorumain}>
             <TouchableOpacity
               onPress={()=>BorrarUsers()}
             >
@@ -133,7 +133,7 @@ export default function Login({ navigation }) {
               </Button>
             </TouchableOpacity>
             
-          </View>
+          </View> */}
         </ImageBackground>
       </View>
     // </SafeAreaView>
@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
   },
   floatRight: {
     textAlign: 'right',
-    color: '#fff',
+    fontStyle: 'italic',
+    color: '#C8C8C8',
     fontWeight: '600',
     paddingRight:10,
     textShadowColor: '#000',
