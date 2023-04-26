@@ -62,3 +62,9 @@ eas update --branch preview --message "Updating the app"
 ```cmd
 eas update
 ```
+
+## last comand success fot build
+
+```cmd
+eas build --profile preview --platform android
+```
