@@ -71,4 +71,4 @@ eas build --profile preview --platform android
 
 ### repo on pc 
 + proyecto_medicontrol_app
-+ medicontrol_app_v8
+  + medicontrol_app_v8
