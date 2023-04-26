@@ -49,7 +49,7 @@ export default function SaveLoginUser({LoginData, setIsLoading, navigation}) {
       // console.log('NO!! hay session iniciada');
     // add logica de fetch al server
       // console.log("not login=>",LoginData.user.toLowerCase(),LoginData.pass)
-      const query = await fetch(url+'/signin',{
+      const query = await fetch(url+'/signin_v2',{
         method: 'POST',
         headers: {
           'authorization': NAMEAPP,
