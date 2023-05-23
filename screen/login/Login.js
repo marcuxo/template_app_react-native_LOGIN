@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { ImageBackground, StatusBar } from 'react-native';
+import { ImageBackground } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { View } from 'react-native'
 import { Text } from 'react-native'
-import { ActivityIndicator, Button, MD2Colors, TextInput } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {expo} from '../../app.json'
+import { Button, TextInput } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import GetDataStartUserDb from '../../dataBase/querys/GetDataStartUserDb';
 import SaveLoginUser from '../../dataBase/querys/SaveLoginUser';
 import DelDataUserDB from '../../dataBase/querys/DelDataUserDB';
 import { Alert } from 'react-native';
+import { VERSION } from '../../url/Url';
 
 export default function Login({ navigation }) {
 
@@ -117,7 +116,7 @@ export default function Login({ navigation }) {
           }
           </View>
           <View>
-            <Text style={styles.floatRight}>V5</Text>
+            <Text style={styles.floatRight}>{VERSION}</Text>
           </View>
 
           {/* <View style={styles.valorumain}>

@@ -1,6 +1,6 @@
 import { URL_SRV } from '../url/Url';
 
-export default function SaveDataMedidor_OnSRV({DataMedidor, USER}) {
+export default function SaveDataMedidor_OnSRV({DataMedidor, USER, EMPRESA}) {
   return new Promise(async (resolve, reject) => {
     let query = await fetch(URL_SRV+'savedata_medidor_srv',{
       method: 'POST',
@@ -11,7 +11,8 @@ export default function SaveDataMedidor_OnSRV({DataMedidor, USER}) {
       },
       body: JSON.stringify({
         MEDIDORES: DataMedidor,
-        USER
+        USER,
+        EMPRESA
       })
     })
     let responsito = await query.json();

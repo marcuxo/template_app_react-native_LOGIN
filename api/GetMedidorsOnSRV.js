@@ -1,5 +1,6 @@
 import React from 'react'
 import { URL_SRV } from '../url/Url';
+import { Alert } from 'react-native';
 
 export default function GetMedidorsOnSRV({EMPRESA}) {
   return new Promise(async (resolve, reject) => {
@@ -15,11 +16,13 @@ export default function GetMedidorsOnSRV({EMPRESA}) {
       })
     })
     let responsito = await query.json();
-
+    // console.log(responsito)
     if(responsito.data.success){
       resolve(responsito.data.body)
     }else{
-      resolve(responsito.data)
+      Alert.alert('Medidores',responsito.data.msg)
+      return
+      // resolve(responsito.data.body)
     }
   })
 }
