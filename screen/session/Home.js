@@ -85,12 +85,12 @@ export default function Home({ route, navigation }) {
     if(resp.OK){
       Alert.alert('Medidores',resp.MSG)
       // eliminar los medidores y recargar los nuevos
-      // await DelDataItemsDB()//elimina los medidores de la base de datos local****
+      await DelDataItemsDB()//elimina los medidores de la base de datos local****
       // await GetDataFromSrvMedidors();// recarga los medidores actualizados desde la base de datos remota(SRV)
       await setDataMedidor([])
     }else{
       Alert.alert('Medidores',resp.MSG)
-      // await DelDataItemsDB()***
+      await DelDataItemsDB()//***
       await setDataMedidor([])
     }
   }
@@ -155,12 +155,12 @@ export default function Home({ route, navigation }) {
         <View style={styles.container_body}>
           <TouchableOpacity
             onPress={()=>HandleSaveData()}
-            // disabled={IsCompleteALL||!IsConnet?true:false}
+            disabled={IsCompleteALL||!IsConnet?true:false}
           >
             <Button
               mode='contained'
               icon='content-save'
-              // disabled={IsCompleteALL||!IsConnet?true:false}
+              disabled={IsCompleteALL||!IsConnet?true:false}
               buttonColor={'#181C7C'}
             >
               <Text style={{color: '#FFFFFF'}}>

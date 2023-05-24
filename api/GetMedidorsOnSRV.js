@@ -16,7 +16,7 @@ export default function GetMedidorsOnSRV({EMPRESA}) {
       })
     })
     let responsito = await query.json();
-    // console.log(responsito)
+    // console.log(responsito.data.body)
     if(responsito.data.success){
       resolve(responsito.data.body)
     }else{
